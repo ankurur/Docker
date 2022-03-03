@@ -5,7 +5,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-      - REPOSITORY_URI=525660028624.dkr.ecr.us-east-2.amazonaws.com/apache:latest
+      - REPOSITORY_URI=525660028624.dkr.ecr.ap-southeast-2.amazonaws.com/neosoft:latest
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
     commands:
@@ -13,14 +13,14 @@ phases:
       - docker --version
       - echo Build started on `date`
       - echo Building the Docker image...          
-      - docker build -t apache:latest .
-      - docker tag apache:latest 525660028624.dkr.ecr.us-east-2.amazonaws.com/apache:latest
+      - docker build -t neosoft:latest .
+      - docker tag neosoft:latest 525660028624.dkr.ecr.ap-southeast-2.amazonaws.com/neosoft:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 525660028624.dkr.ecr.us-east-2.amazonaws.com/apache:latest
-      - printf '[{"name":"neo","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
+      - docker push 525660028624.dkr.ecr.ap-southeast-2.amazonaws.com/neosoft:latest
+      - printf '[{"name":"Neosoft","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
       - cat imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
